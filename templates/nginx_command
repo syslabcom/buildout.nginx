@@ -1,0 +1,2 @@
+#!/bin/bash
+${buildout:parts-directory}/nginx/sbin/nginx -c ${nginx.conf:output} -p ${buildout:parts-directory}/nginx $@
