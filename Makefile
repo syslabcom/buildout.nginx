@@ -4,13 +4,21 @@ PYTHON ?= python3
 
 all: .installed.cfg
 
+buildout.cfg:
+	[ test -f buildout.cfg ] || \
+		echo '[buildout]' > buildout.cfg; \
+		echo 'extends =' >> buildout.cfg; \
+		echo '    config/base.cfg' >> buildout.cfg; \
+		echo '    custom.cfg' >> buildout.cfg; \
+	touch custom.cfg
+
 .venv/bin/buildout: .venv/bin/pip requirements.txt
 	./.venv/bin/pip install -IUr requirements.txt
 
 .venv/bin/pip:
 	$(PYTHON) -m venv .venv
 
-.installed.cfg: .venv/bin/buildout buildout.cfg templates/nginx.conf templates/nginx_command
+.installed.cfg: .venv/bin/buildout buildout.cfg custom.cfg config/base.cfg templates/nginx.conf templates/nginx_command
 	./.venv/bin/buildout
 
 .PHONY: start
