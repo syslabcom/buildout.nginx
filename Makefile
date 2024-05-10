@@ -4,14 +4,14 @@ PYTHON ?= python3
 
 all: .installed.cfg
 
-bin/buildout: bin/pip requirements.txt
-	./bin/pip install -IUr requirements.txt
+.venv/bin/buildout: .venv/bin/pip requirements.txt
+	./.venv/bin/pip install -IUr requirements.txt
 
-bin/pip:
-	$(PYTHON) -m venv .
+.venv/bin/pip:
+	$(PYTHON) -m venv .venv
 
-.installed.cfg: bin/buildout buildout.cfg templates/nginx.conf templates/nginx_command
-	./bin/buildout
+.installed.cfg: .venv/bin/buildout buildout.cfg templates/nginx.conf templates/nginx_command
+	./.venv/bin/buildout
 
 .PHONY: start
 start: .installed.cfg
@@ -27,7 +27,7 @@ quit: .installed.cfg
 
 .PHONY: clean_venv
 clean_venv:
-	rm -rf bin lib* include share
+	rm -rf .venv
 
 .PHONY: clean
 clean: clean_venv
