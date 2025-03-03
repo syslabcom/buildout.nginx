@@ -27,7 +27,7 @@ start: .installed.cfg
 
 .PHONY: reload
 reload: .installed.cfg
-	./bin/nginx -s reload
+	./bin/nginx -t && ./bin/nginx -s reload
 
 .PHONY: quit
 quit: .installed.cfg
